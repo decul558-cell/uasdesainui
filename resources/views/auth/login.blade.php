@@ -2,24 +2,26 @@
 @section('title', 'Masuk')
 @push('styles')
 <style>
-    .auth-wrapper{min-height:calc(100vh - 70px);display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--cream);}
+    .auth-wrapper{min-height:calc(100vh - 70px);display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--mist);}
     .auth-container{display:grid;grid-template-columns:1fr 1fr;max-width:900px;width:100%;border-radius:24px;overflow:hidden;box-shadow:var(--shadow-lg);}
-    .auth-left{background: linear-gradient(160deg, #0F2544 0%, #0D9488 100%);}
-    .auth-left::before{content:'📚';position:absolute;font-size:15rem;opacity:0.05;bottom:-3rem;right:-3rem;}
-    .auth-left-title{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;line-height:1.2;margin-bottom:1rem;}
+    .auth-left{background:linear-gradient(160deg,#3D2645 0%,#5B4B8A 100%);position:relative;padding:3rem;display:flex;flex-direction:column;justify-content:space-between;color:white;overflow:hidden;}
+    .auth-left::before{content:'📚';position:absolute;font-size:15rem;opacity:0.06;bottom:-3rem;right:-3rem;}
+    .auth-left-title{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;line-height:1.2;margin-bottom:1rem;position:relative;z-index:1;}
     .auth-left-title span{color:var(--gold);}
-    .auth-left-desc{opacity:0.8;line-height:1.7;font-size:0.95rem;}
-    .auth-testimonial{background:rgba(255,255,255,0.1);border-radius:16px;padding:1.25rem;backdrop-filter:blur(10px);}
-    .auth-testimonial p{font-size:0.875rem;opacity:0.9;line-height:1.6;font-style:italic;}
-    .auth-testimonial-author{font-size:0.8rem;opacity:0.7;margin-top:0.5rem;font-weight:600;}
+    .auth-left-desc{opacity:0.85;line-height:1.7;font-size:0.95rem;position:relative;z-index:1;}
+    .auth-testimonial{background:rgba(255,255,255,0.08);border-radius:16px;padding:1.25rem;backdrop-filter:blur(10px);position:relative;z-index:1;border:1px solid rgba(255,255,255,0.1);}
+    .auth-testimonial p{font-size:0.875rem;opacity:0.92;line-height:1.6;font-style:italic;color:white;}
+    .auth-testimonial-author{font-size:0.8rem;opacity:0.75;margin-top:0.5rem;font-weight:600;color:#d9c9e0;}
     .auth-right{background:white;padding:3rem;}
-    .auth-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--brown);margin-bottom:0.5rem;}
+    .auth-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--plum);margin-bottom:0.5rem;}
     .auth-subtitle{color:var(--text-muted);font-size:0.9rem;margin-bottom:2rem;}
+    .auth-subtitle a{color:var(--magenta);font-weight:600;text-decoration:none;}
+    .auth-subtitle a:hover{text-decoration:underline;}
     .auth-divider{display:flex;align-items:center;gap:1rem;margin:1.5rem 0;}
-    .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--cream-dark);}
+    .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--mist-dark);}
     .auth-divider span{font-size:0.8rem;color:var(--text-muted);white-space:nowrap;}
     .auth-footer{text-align:center;margin-top:1.5rem;font-size:0.875rem;color:var(--text-muted);}
-    .auth-footer a{color:var(--orange);font-weight:600;text-decoration:none;}
+    .auth-footer a{color:var(--magenta);font-weight:600;text-decoration:none;}
     .auth-footer a:hover{text-decoration:underline;}
     .input-wrapper{position:relative;}
     .input-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:0.9rem;}
@@ -37,13 +39,19 @@
     <div class="auth-container">
         <div class="auth-left">
             <div>
-                <div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;margin-bottom:2rem;">📚 Toko<span style="color:var(--gold)">Buku</span></div>
+                <div style="display:flex;align-items:center;gap:0.5rem;font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;margin-bottom:2rem;position:relative;z-index:1;">
+                    <svg width="24" height="24" viewBox="0 0 30 30" style="flex-shrink:0;">
+                        <path d="M15 2 L26 22 L20 22 L20 27 L10 27 L10 22 L4 22 Z" fill="#D4A24E"/>
+                        <path d="M15 6 L15 22" stroke="#2C1B33" stroke-width="1.5"/>
+                        <path d="M9 22 Q15 17 21 22" stroke="#2C1B33" stroke-width="1.5" fill="none"/>
+                    </svg>
+                    Pustaka <span style="color:var(--gold)">Nusantara</span>
+                </div>
                 <h2 class="auth-left-title">Selamat<br>Datang<br><span>Kembali!</span></h2>
                 <p class="auth-left-desc" style="margin-top:1rem;">Masuk ke akun kamu dan lanjutkan perjalanan membacamu bersama kami.</p>
             </div>
             <div class="auth-testimonial">
-                <p>"TokoBuku adalah surga bagi para pecinta buku. Koleksinya lengkap dan pengiriman cepat!"</p>
-                <div class="auth-testimonial-author">— Andy, Mahasiswa Surabaya</div>
+                <p style="font-style:normal;">📖 Ribuan cerita menanti untuk dibuka. Yang mana akan jadi favoritmu selanjutnya?</p>
             </div>
         </div>
         <div class="auth-right">
@@ -71,7 +79,7 @@
                     </div>
                 </div>
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
-                    <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;cursor:pointer;">
+                    <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;cursor:pointer;color:var(--text);">
                         <input type="checkbox" name="remember"> Ingat saya
                     </label>
                 </div>
@@ -79,12 +87,6 @@
                     <i class="fas fa-sign-in-alt"></i> Masuk
                 </button>
             </form>
-
-            <div class="auth-divider"><span>info akun demo</span></div>
-            <div style="background:var(--cream);border-radius:var(--radius);padding:1rem;font-size:0.8rem;color:var(--text-muted);">
-                <div style="margin-bottom:0.35rem;"><strong>Admin:</strong> admin@tokobuku.com / password</div>
-                <div><strong>User:</strong> andy@tokobuku.com / password</div>
-            </div>
 
             <div class="auth-footer">
                 Belum punya akun? <a href="{{ route('register') }}">Daftar sekarang</a>

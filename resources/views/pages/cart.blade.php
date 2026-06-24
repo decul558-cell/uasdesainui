@@ -2,7 +2,7 @@
 @section('title', 'Keranjang')
 @push('styles')
 <style>
-    .page-header{background: linear-gradient(135deg, #3a8a5c 0%, #5B4B8A 100%);padding:3rem 2rem;color:white;text-align:center;}
+    .page-header{background: linear-gradient(135deg,#3D2645 0%,#5B4B8A 100%);padding:3rem 2rem;color:white;text-align:center;}
     .page-header-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;margin-bottom:0.5rem;}
     .page-header-sub{opacity:0.8;font-size:0.95rem;}
     .cart-layout{display:grid;grid-template-columns:1fr 360px;gap:2rem;padding:3rem 0;}

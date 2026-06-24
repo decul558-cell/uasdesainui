@@ -19,4 +19,5 @@ class User extends Authenticatable {
     public function notifications() { return $this->hasMany(Notification::class); }
     public function activityLogs() { return $this->hasMany(ActivityLog::class); }
     public function readingLists() { return $this->hasMany(ReadingList::class); }
+    public function preorders() { return $this->hasMany(Preorder::class); }
 }

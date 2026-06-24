@@ -31,6 +31,8 @@ use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\BundleController as AdminBundleController;
 use App\Http\Controllers\Admin\AbandonedCartController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PreorderController;
+use App\Http\Controllers\Admin\PreorderController as AdminPreorderController;
 
 // Auth Routes
 Route::middleware('guest')->group(function () {
@@ -100,6 +102,11 @@ Route::middleware('auth')->group(function () {
 
     // Bundle - add to cart (auth required)
     Route::post('/bundling/{bundle}/cart', [BundleController::class, 'addToCart'])->name('bundles.addToCart');
+
+    // Preorder
+    Route::get('/preorder', [PreorderController::class, 'index'])->name('preorders.index');
+    Route::post('/preorder', [PreorderController::class, 'store'])->name('preorders.store');
+    Route::delete('/preorder/{id}', [PreorderController::class, 'destroy'])->name('preorders.destroy'); 
 });
 
 // Admin Routes
@@ -159,4 +166,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/chats/{conversation}/reply', [AdminChatController::class, 'reply'])->name('chats.reply');
     Route::post('/chats/{conversation}/close', [AdminChatController::class, 'close'])->name('chats.close');
     Route::get('/chats/{conversation}/poll', [AdminChatController::class, 'poll'])->name('chats.poll');
+
+    // Preorder Admin
+    Route::get('/preorders', [AdminPreorderController::class, 'index'])->name('preorders.index');
+    Route::post('/preorders/notify/{product}', [AdminPreorderController::class, 'notify'])->name('preorders.notify');
+    Route::post('/preorders/{id}/cancel', [AdminPreorderController::class, 'cancel'])->name('preorders.cancel');
 });

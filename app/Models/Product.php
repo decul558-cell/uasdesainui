@@ -13,6 +13,7 @@ class Product extends Model {
     public function carts() { return $this->hasMany(Cart::class); }
     public function wishlists() { return $this->hasMany(Wishlist::class); }
     public function reviews() { return $this->hasMany(Review::class); }
+    public function preorders() { return $this->hasMany(Preorder::class); }
 
     public function getAverageRatingAttribute() {
         return $this->reviews()->avg('rating') ?? 0;

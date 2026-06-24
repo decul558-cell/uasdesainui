@@ -277,8 +277,6 @@
         </div>
         @else
         <div class="no-reviews reveal">
-            <div class="no-reviews-icon">💬</div>
-            <p>Belum ada ulasan. Jadilah yang pertama!</p>
         </div>
         @endif
     </div>

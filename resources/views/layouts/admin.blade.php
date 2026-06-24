@@ -172,6 +172,11 @@
             <a href="{{ route('admin.bundles.index') }}" class="sidebar-item {{ request()->routeIs('admin.bundles*') ? 'active' : '' }}">
                 <i class="fas fa-box-open"></i> Bundle
             </a>
+            <a href="{{ route('admin.preorders.index') }}" class="sidebar-item {{ request()->routeIs('admin.preorders*') ? 'active' : '' }}">
+                <i class="fas fa-hourglass-half"></i> Pre-Order
+                @php $waitingPreorders = \App\Models\Preorder::where('status', 'waiting')->count(); @endphp
+                @if($waitingPreorders > 0)<span class="badge-count">{{ $waitingPreorders }}</span>@endif
+            </a>
             <a href="{{ route('admin.abandoned-carts.index') }}" class="sidebar-item {{ request()->routeIs('admin.abandoned-carts*') ? 'active' : '' }}">
                 <i class="fas fa-shopping-cart"></i> Abandoned Cart
                 @php $abandonCount = \App\Models\Cart::abandoned()->distinct('user_id')->count('user_id'); @endphp

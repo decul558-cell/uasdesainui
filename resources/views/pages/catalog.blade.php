@@ -17,26 +17,27 @@
     .search-box input{width:100%;padding:0.75rem 1rem 0.75rem 2.75rem;border:1.5px solid var(--mist-dark);border-radius:50px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.875rem;transition:var(--transition);}
     .search-box input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,162,78,0.18);}
     .search-box i{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted);}
+
+    /* PRODUCT GRID */
     .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem;}
-    .product-card{background:white;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);transition:var(--transition);position:relative;display:block;text-decoration:none;color:inherit;cursor:pointer;}
+    .product-card{background:white;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);transition:var(--transition);position:relative;display:flex;flex-direction:column;text-decoration:none;color:inherit;cursor:pointer;}
     .product-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);}
-    .product-cover{width:100%;height:190px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-    .product-cover img{width:100%;height:100%;object-fit:cover;}
+    .product-cover{width:100%;height:190px;flex-shrink:0;position:relative;overflow:hidden;background:#f0edf5;}
+    .product-cover img{width:100%;height:100%;object-fit:cover;display:block;}
     .product-cover-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;}
     .product-category-tag{position:absolute;top:10px;left:10px;background:var(--magenta);color:white;font-size:0.65rem;font-weight:700;padding:0.2rem 0.5rem;border-radius:50px;text-transform:uppercase;}
-
-    /* ── BADGES ── */
     .badge-wrap{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:4px;align-items:flex-end;}
     .badge-new{background:#3a8a5c;color:white;font-size:0.62rem;font-weight:800;padding:0.2rem 0.55rem;border-radius:50px;text-transform:uppercase;letter-spacing:0.05em;box-shadow:0 2px 8px rgba(58,138,92,0.4);}
     .badge-best{background:var(--gold);color:var(--plum-dark);font-size:0.62rem;font-weight:800;padding:0.2rem 0.55rem;border-radius:50px;text-transform:uppercase;letter-spacing:0.05em;box-shadow:0 2px 8px rgba(212,162,78,0.4);}
-
-    .product-body{padding:1rem;}
+    .product-body{padding:1rem;display:flex;flex-direction:column;flex:1;}
     .product-title{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--plum);margin-bottom:0.25rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
     .product-author{font-size:0.75rem;color:var(--text-muted);margin-bottom:0.75rem;}
-    .product-footer{display:flex;align-items:center;justify-content:space-between;}
+    .product-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;}
+    .product-footer form{display:contents;}
     .product-price{font-weight:800;color:var(--magenta);font-size:0.95rem;}
-    .btn-add-cart{background:var(--plum);color:white;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition);font-size:0.8rem;text-decoration:none;position:relative;z-index:2;}
+    .btn-add-cart{background:var(--plum);color:white;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--transition);font-size:0.8rem;text-decoration:none;position:relative;z-index:2;flex-shrink:0;}
     .btn-add-cart:hover{background:var(--gold);color:var(--plum-dark);transform:scale(1.1);}
+
     .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;}
     .results-count{font-size:0.875rem;color:var(--text-muted);}
     .results-count strong{color:var(--plum);}
@@ -49,6 +50,7 @@
     .pagination-wrap .page-item .page-link{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:white;color:var(--plum);text-decoration:none;font-weight:600;font-size:0.875rem;box-shadow:var(--shadow);transition:var(--transition);}
     .pagination-wrap .page-item.active .page-link{background:var(--gold);color:var(--plum-dark);}
     .pagination-wrap .page-item .page-link:hover{background:var(--gold);color:var(--plum-dark);}
+
     @media(max-width:768px){
         .catalog-layout{grid-template-columns:1fr;}
         .sidebar{position:static;}
@@ -123,7 +125,7 @@
                     $isNew  = $product->isNew();
                     $isBest = in_array($product->id, $bestsellerIds);
                 @endphp
-                <a href="{{ route('products.show', $product->slug) }}" class="product-card reveal" style="transition-delay:{{ ($i%8) * 0.05 }}s">
+                <div class="product-card reveal" style="transition-delay:{{ ($i%8) * 0.05 }}s" onclick="window.location='{{ route('products.show', $product->slug) }}'">
                     <div class="product-cover">
                         @if($product->cover)
                             <img src="{{ Storage::url($product->cover) }}" alt="{{ $product->title }}">
@@ -132,7 +134,6 @@
                         @endif
                         <span class="product-category-tag">{{ $product->category->name }}</span>
 
-                        {{-- BADGES --}}
                         @if($isNew || $isBest)
                         <div class="badge-wrap">
                             @if($isBest)<span class="badge-best">🔥 Terlaris</span>@endif
@@ -156,7 +157,7 @@
                             @endauth
                         </div>
                     </div>
-                </a>
+                </div>
                 @endforeach
             </div>
 
