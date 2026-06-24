@@ -304,17 +304,24 @@
             $icons = ['📚','✍️','💡'];
         @endphp
         <div class="article-grid">
-            @foreach($articles as $i => $article)
-            <a href="{{ route('articles.show', $article->slug) }}" class="article-card reveal" style="transition-delay:{{ $i*0.1 }}s">
-                <div class="article-thumb" style="background:{{ $bgs[$i%3] }}">{{ $icons[$i%3] }}</div>
-                <div class="article-body">
-                    <div class="article-date">{{ $article->published_at?->format('d M Y') }}</div>
-                    <h3 class="article-title">{{ $article->title }}</h3>
-                    <p class="article-excerpt">{{ $article->excerpt }}</p>
-                </div>
-            </a>
-            @endforeach
+    @foreach($articles as $i => $article)
+    <a href="{{ route('articles.show', $article->slug) }}" class="article-card reveal" style="transition-delay:{{ $i*0.1 }}s">
+        <div class="article-thumb" style="background:{{ $bgs[$i%3] }};position:relative;">
+            @if($article->thumbnail)
+                <img src="{{ Storage::url($article->thumbnail) }}" alt="{{ $article->title }}"
+                    style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;">
+            @else
+                {{ $icons[$i%3] }}
+            @endif
         </div>
+        <div class="article-body">
+            <div class="article-date">{{ $article->published_at?->format('d M Y') }}</div>
+            <h3 class="article-title">{{ $article->title }}</h3>
+            <p class="article-excerpt">{{ $article->excerpt }}</p>
+        </div>
+    </a>
+    @endforeach
+</div>
     </div>
 </section>
 

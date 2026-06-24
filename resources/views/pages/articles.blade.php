@@ -53,9 +53,14 @@
         @foreach($articles as $i => $article)
         <a href="{{ route('articles.show', $article->slug) }}" class="article-card reveal" style="transition-delay:{{ ($i%6) * 0.08 }}s">
             <div class="article-thumb" style="background:{{ $bgs[$i%5] }}">
-                {{ $icons[$i%5] }}
-                <span class="article-thumb-label">Artikel</span>
-            </div>
+    @if($article->thumbnail)
+        <img src="{{ Storage::url($article->thumbnail) }}" alt="{{ $article->title }}"
+            style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;">
+    @else
+        {{ $icons[$i%5] }}
+    @endif
+    <span class="article-thumb-label">Artikel</span>
+        </div>
             <div class="article-body">
                 <div class="article-meta">
                     <span class="article-date"><i class="fas fa-calendar-alt"></i> {{ $article->published_at?->format('d M Y') }}</span>
