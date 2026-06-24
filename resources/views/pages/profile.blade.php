@@ -16,6 +16,9 @@
     .profile-nav-item{display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1rem;border-radius:10px;color:var(--text-muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:var(--transition);cursor:pointer;border:none;background:none;width:100%;font-family:'Plus Jakarta Sans',sans-serif;}
     .profile-nav-item:hover,.profile-nav-item.active{background:var(--mist);color:var(--magenta);}
     .profile-nav-item i{width:18px;text-align:center;}
+    .profile-nav-divider{height:1px;background:var(--mist-dark);margin:0.5rem 0;}
+    .profile-nav-item.logout{color:#c0392b;}
+    .profile-nav-item.logout:hover{background:#fdf0f0;color:#c0392b;}
     .profile-content{display:flex;flex-direction:column;gap:1.5rem;}
     .profile-section{background:white;border-radius:20px;padding:2rem;box-shadow:var(--shadow);}
     .profile-section-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--plum);margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:2px solid var(--mist-dark);}
@@ -33,6 +36,13 @@
     .status-cancelled{background:#f3d8d8;color:#8a2c2c;}
     .photo-upload{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;}
     .photo-preview{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid var(--mist-dark);}
+
+    /* Password toggle */
+    .input-pw-wrap{position:relative;}
+    .input-pw-wrap .form-control{padding-right:2.75rem;}
+    .btn-eye{position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:0.95rem;padding:0;line-height:1;transition:color 0.2s;}
+    .btn-eye:hover{color:var(--plum);}
+
     @media(max-width:768px){
         .profile-layout{grid-template-columns:1fr;}
         .form-grid-2{grid-template-columns:1fr;}
@@ -59,21 +69,22 @@
             </div>
 
             <div class="profile-nav reveal">
-                <a href="#edit-profile" class="profile-nav-item active" onclick="showTab('edit-profile')">
+                <button class="profile-nav-item active" onclick="showTab('edit-profile', this)">
                     <i class="fas fa-user-edit"></i> Edit Profil
-                </a>
-                <a href="#change-password" class="profile-nav-item" onclick="showTab('change-password')">
+                </button>
+                <button class="profile-nav-item" onclick="showTab('change-password', this)">
                     <i class="fas fa-lock"></i> Ubah Password
-                </a>
-                <a href="#order-history" class="profile-nav-item" onclick="showTab('order-history')">
-                    <i class="fas fa-shopping-bag"></i> Riwayat Pesanan
-                </a>
-                <a href="{{ route('wishlist.index') }}" class="profile-nav-item">
-                    <i class="fas fa-heart"></i> Wishlist Saya
-                </a>
-                <a href="{{ route('notifications.index') }}" class="profile-nav-item">
-                    <i class="fas fa-bell"></i> Notifikasi
-                </a>
+                </button>
+
+                <div class="profile-nav-divider"></div>
+
+                {{-- Tombol Keluar --}}
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="profile-nav-item logout">
+                        <i class="fas fa-sign-out-alt"></i> Keluar
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -133,16 +144,25 @@
                     @csrf
                     <div class="form-group">
                         <label class="form-label">Password Lama</label>
-                        <input type="password" name="current_password" class="form-control" placeholder="••••••••" required>
+                        <div class="input-pw-wrap">
+                            <input type="password" name="current_password" id="pwCurrent" class="form-control" placeholder="••••••••" required>
+                            <button type="button" class="btn-eye" onclick="togglePw('pwCurrent', this)"><i class="fas fa-eye"></i></button>
+                        </div>
                         @error('current_password')<p class="form-error">{{ $message }}</p>@enderror
                     </div>
                     <div class="form-group">
                         <label class="form-label">Password Baru</label>
-                        <input type="password" name="password" class="form-control" placeholder="Minimal 6 karakter" required>
+                        <div class="input-pw-wrap">
+                            <input type="password" name="password" id="pwNew" class="form-control" placeholder="Minimal 6 karakter" required>
+                            <button type="button" class="btn-eye" onclick="togglePw('pwNew', this)"><i class="fas fa-eye"></i></button>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Konfirmasi Password Baru</label>
-                        <input type="password" name="password_confirmation" class="form-control" placeholder="Ulangi password baru" required>
+                        <div class="input-pw-wrap">
+                            <input type="password" name="password_confirmation" id="pwConfirm" class="form-control" placeholder="Ulangi password baru" required>
+                            <button type="button" class="btn-eye" onclick="togglePw('pwConfirm', this)"><i class="fas fa-eye"></i></button>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-lock"></i> Ubah Password
@@ -154,7 +174,10 @@
             <div class="profile-section reveal" id="tab-order-history" style="display:none;">
                 <div class="profile-section-title">Riwayat Pesanan Terbaru</div>
                 @if($orders->count())
-                @php $sc=['pending'=>'status-pending','paid'=>'status-paid','shipped'=>'status-shipped','delivered'=>'status-delivered','cancelled'=>'status-cancelled']; $sl=['pending'=>'Menunggu','paid'=>'Dibayar','shipped'=>'Dikirim','delivered'=>'Diterima','cancelled'=>'Batal']; @endphp
+                @php
+                    $sc=['pending'=>'status-pending','paid'=>'status-paid','shipped'=>'status-shipped','delivered'=>'status-delivered','cancelled'=>'status-cancelled'];
+                    $sl=['pending'=>'Menunggu','paid'=>'Dibayar','shipped'=>'Dikirim','delivered'=>'Diterima','cancelled'=>'Batal'];
+                @endphp
                 @foreach($orders as $order)
                 <div class="order-mini">
                     <div>
@@ -179,11 +202,23 @@
 
 @push('scripts')
 <script>
-    function showTab(tab) {
-        document.querySelectorAll('[id^="tab-"]').forEach(el => el.style.display = 'none');
+    function showTab(tab, el) {
+        document.querySelectorAll('[id^="tab-"]').forEach(e => e.style.display = 'none');
         document.getElementById('tab-' + tab).style.display = 'block';
-        document.querySelectorAll('.profile-nav-item').forEach(el => el.classList.remove('active'));
-        event.target.closest('.profile-nav-item').classList.add('active');
+        document.querySelectorAll('.profile-nav-item').forEach(e => e.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    function togglePw(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon  = btn.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
     }
 
     document.getElementById('photoInput').addEventListener('change', function(e) {

@@ -17,16 +17,32 @@
     .auth-subtitle{color:var(--text-muted);font-size:0.9rem;margin-bottom:2rem;}
     .auth-subtitle a{color:var(--magenta);font-weight:600;text-decoration:none;}
     .auth-subtitle a:hover{text-decoration:underline;}
-    .auth-divider{display:flex;align-items:center;gap:1rem;margin:1.5rem 0;}
-    .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--mist-dark);}
-    .auth-divider span{font-size:0.8rem;color:var(--text-muted);white-space:nowrap;}
     .auth-footer{text-align:center;margin-top:1.5rem;font-size:0.875rem;color:var(--text-muted);}
     .auth-footer a{color:var(--magenta);font-weight:600;text-decoration:none;}
     .auth-footer a:hover{text-decoration:underline;}
     .input-wrapper{position:relative;}
-    .input-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:0.9rem;}
+    .input-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:0.9rem;pointer-events:none;}
     .input-wrapper .form-control{padding-left:2.75rem;}
     .btn-block{width:100%;justify-content:center;}
+
+    /* Tombol toggle password */
+    .btn-eye{
+        position:absolute;
+        right:1rem;
+        top:50%;
+        transform:translateY(-50%);
+        background:none;
+        border:none;
+        cursor:pointer;
+        color:var(--text-muted);
+        font-size:0.95rem;
+        padding:0;
+        line-height:1;
+        transition:color 0.2s;
+    }
+    .btn-eye:hover{color:var(--plum);}
+    .input-wrapper .form-control.has-eye{padding-right:2.75rem;}
+
     @media(max-width:768px){
         .auth-container{grid-template-columns:1fr;}
         .auth-left{display:none;}
@@ -54,6 +70,7 @@
                 <p style="font-style:normal;">📖 Ribuan cerita menanti untuk dibuka. Yang mana akan jadi favoritmu selanjutnya?</p>
             </div>
         </div>
+
         <div class="auth-right">
             <h1 class="auth-title">Masuk</h1>
             <p class="auth-subtitle">Belum punya akun? <a href="{{ route('register') }}">Daftar gratis</a></p>
@@ -68,21 +85,31 @@
                     <label class="form-label">Email</label>
                     <div class="input-wrapper">
                         <i class="fas fa-envelope input-icon"></i>
-                        <input type="email" name="email" class="form-control" placeholder="email@example.com" value="{{ old('email') }}" required autofocus>
+                        <input type="email" name="email" class="form-control"
+                            placeholder="email@example.com"
+                            value="{{ old('email') }}" required autofocus>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label class="form-label">Password</label>
                     <div class="input-wrapper">
                         <i class="fas fa-lock input-icon"></i>
-                        <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                        <input type="password" name="password" id="passwordInput"
+                            class="form-control has-eye"
+                            placeholder="••••••••" required>
+                        <button type="button" class="btn-eye" id="btnEye" onclick="togglePassword()" aria-label="Tampilkan password">
+                            <i class="fas fa-eye" id="eyeIcon"></i>
+                        </button>
                     </div>
                 </div>
+
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
                     <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;cursor:pointer;color:var(--text);">
                         <input type="checkbox" name="remember"> Ingat saya
                     </label>
                 </div>
+
                 <button type="submit" class="btn btn-primary btn-block btn-lg">
                     <i class="fas fa-sign-in-alt"></i> Masuk
                 </button>
@@ -95,3 +122,19 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+function togglePassword() {
+    const input = document.getElementById('passwordInput');
+    const icon  = document.getElementById('eyeIcon');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+</script>
+@endpush

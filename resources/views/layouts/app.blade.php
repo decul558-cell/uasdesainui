@@ -67,7 +67,7 @@
 
         /* FOOTER */
         footer{background:var(--plum-dark);color:rgba(237,230,240,0.75);padding:4rem 2rem 2rem;margin-top:6rem;}
-        .footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,0.08);}
+        .footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,0.08);}
         .footer-brand{display:flex;align-items:center;gap:0.5rem;font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:var(--mist);margin-bottom:1rem;}
         .footer-brand span{color:var(--gold);}
         .footer-desc{font-size:0.875rem;line-height:1.7;color:#9d84a8;}
@@ -140,7 +140,7 @@
             .hamburger{display:block;}
             .navbar-pill.mobile-open{display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;width:75%;max-width:280px;background:linear-gradient(180deg,var(--plum-dark) 0%,var(--plum) 100%);padding:0;gap:0;border-radius:0 16px 16px 0;box-shadow:4px 0 24px rgba(0,0,0,0.4);z-index:1001;animation:slideInLeft 0.25s ease;}
             .navbar-pill.mobile-open a{text-align:left;padding:0.75rem 1.5rem;border-left:3px solid transparent;border-radius:0;display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;} .navbar-pill.mobile-open a.active{border-left-color:var(--gold);color:var(--gold);background:rgba(212,162,78,0.12);} .navbar-pill.mobile-open a:hover{border-left-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);border-radius:0;}
-            .footer-grid{grid-template-columns:1fr;gap:1.25rem;} footer{margin-top:3rem;padding:2.5rem 1.5rem 1.5rem;}
+            .footer-grid{grid-template-columns:1fr;gap:1.5rem;} footer{margin-top:3rem;padding:2rem 1.5rem 1.5rem;}
             #chat-panel{width:calc(100vw - 4rem);}
             .bottom-nav{display:block;}
             body{padding-bottom:72px;}
@@ -175,6 +175,8 @@
         <li><a href="{{ route('reading-list.index') }}" class="{{ request()->routeIs('reading-list.*') ? 'active' : '' }}">Riwayat Baca</a></li>
         <li><a href="{{ route('preorders.index') }}" class="{{ request()->routeIs('preorders.*') ? 'active' : '' }}">Pre-Order</a></li>
         <li><a href="{{ route('wishlist.index') }}" class="{{ request()->routeIs('wishlist.*') ? 'active' : '' }}">Wishlist</a></li>
+        <li><a href="{{ route('orders.index') }}" class="{{ request()->routeIs('orders.*') ? 'active' : '' }}">Riwayat Pesanan</a></li>
+        <li><a href="{{ route('notifications.index') }}" class="{{ request()->routeIs('notifications.*') ? 'active' : '' }}">Notifikasi</a></li>
         @endauth
     </ul>
 
@@ -252,23 +254,6 @@
                 Pustaka <span>Nusantara</span>
             </div>
             <p class="footer-desc">Temukan buku impianmu di sini. Koleksi lengkap dari berbagai genre untuk semua kalangan.</p>
-        </div>
-        <div>
-            <div class="footer-title">Navigasi</div>
-            <ul class="footer-links">
-                <li><a href="{{ route('home') }}">Beranda</a></li>
-                <li><a href="{{ route('products.index') }}">Katalog</a></li>
-                <li><a href="{{ route('articles.index') }}">Artikel</a></li>
-            </ul>
-        </div>
-        <div>
-            <div class="footer-title">Akun</div>
-            <ul class="footer-links">
-                <li><a href="{{ route('login') }}">Masuk</a></li>
-                <li><a href="{{ route('register') }}">Daftar</a></li>
-                <li><a href="{{ route('orders.index') }}">Pesanan Saya</a></li>
-                <li><a href="{{ route('wishlist.index') }}">Wishlist</a></li>
-            </ul>
         </div>
         <div>
             <div class="footer-title">Kontak</div>

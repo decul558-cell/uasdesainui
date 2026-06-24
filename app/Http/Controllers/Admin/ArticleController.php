@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ArticleController extends Controller
@@ -23,11 +24,12 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
-            'body'  => 'required',
+            'title'     => 'required',
+            'body'      => 'required',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $data                 = $request->all();
+        $data                 = $request->only(['title', 'excerpt', 'body', 'status']);
         $data['slug']         = Str::slug($request->title) . '-' . Str::random(5);
         $data['user_id']      = Auth::id();
         $data['published_at'] = $request->status === 'published' ? now() : null;
@@ -49,17 +51,22 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $request->validate([
-            'title' => 'required',
-            'body'  => 'required',
+            'title'     => 'required',
+            'body'      => 'required',
+            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['title', 'excerpt', 'body', 'status']);
 
         if ($request->status === 'published' && !$article->published_at) {
             $data['published_at'] = now();
         }
 
         if ($request->hasFile('thumbnail')) {
+            // Hapus thumbnail lama jika ada
+            if ($article->thumbnail) {
+                Storage::disk('public')->delete($article->thumbnail);
+            }
             $data['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
         }
 
@@ -70,6 +77,9 @@ class ArticleController extends Controller
 
     public function destroy(Article $article)
     {
+        if ($article->thumbnail) {
+            Storage::disk('public')->delete($article->thumbnail);
+        }
         $article->delete();
         return back()->with('success', 'Artikel berhasil dihapus!');
     }
