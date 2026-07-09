@@ -21,12 +21,42 @@ class ArticleController extends Controller
         return view('admin.articles.form');
     }
 
+    private function uploadThumbnail(array $files, ?string $oldThumbnail = null): ?string
+    {
+        if (!isset($files['thumbnail']) || $files['thumbnail']['error'] !== UPLOAD_ERR_OK) {
+            return null;
+        }
+
+        $tmpPath  = $files['thumbnail']['tmp_name'];
+        $origName = $files['thumbnail']['name'];
+        $ext      = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+
+        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+            return null;
+        }
+
+        $filename = 'thumbnails/' . Str::random(40) . '.' . $ext;
+        $destPath = storage_path('app/public/' . $filename);
+
+        if (!is_dir(dirname($destPath))) {
+            mkdir(dirname($destPath), 0755, true);
+        }
+
+        if (move_uploaded_file($tmpPath, $destPath)) {
+            if ($oldThumbnail) {
+                Storage::disk('public')->delete($oldThumbnail);
+            }
+            return $filename;
+        }
+
+        return null;
+    }
+
     public function store(Request $request)
     {
         $request->validate([
-            'title'     => 'required',
-            'body'      => 'required',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'title' => 'required',
+            'body'  => 'required',
         ]);
 
         $data                 = $request->only(['title', 'excerpt', 'body', 'status']);
@@ -34,8 +64,9 @@ class ArticleController extends Controller
         $data['user_id']      = Auth::id();
         $data['published_at'] = $request->status === 'published' ? now() : null;
 
-        if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
+        $thumb = $this->uploadThumbnail($_FILES);
+        if ($thumb) {
+            $data['thumbnail'] = $thumb;
         }
 
         Article::create($data);
@@ -51,9 +82,8 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $request->validate([
-            'title'     => 'required',
-            'body'      => 'required',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'title' => 'required',
+            'body'  => 'required',
         ]);
 
         $data = $request->only(['title', 'excerpt', 'body', 'status']);
@@ -62,12 +92,9 @@ class ArticleController extends Controller
             $data['published_at'] = now();
         }
 
-        if ($request->hasFile('thumbnail')) {
-            // Hapus thumbnail lama jika ada
-            if ($article->thumbnail) {
-                Storage::disk('public')->delete($article->thumbnail);
-            }
-            $data['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
+        $thumb = $this->uploadThumbnail($_FILES, $article->thumbnail);
+        if ($thumb) {
+            $data['thumbnail'] = $thumb;
         }
 
         $article->update($data);

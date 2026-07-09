@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin') — TokoBuku Admin</title>
+    <title>@yield('title', 'Admin') — Pustaka Nusantara Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -89,7 +89,7 @@
 <nav class="admin-topnav">
     <div style="display:flex;align-items:center;gap:1rem;">
         <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-        <a href="{{ route('admin.dashboard') }}" class="admin-topnav-brand">📚 Pustaka<span>Nusantara</span>
+        <a href="{{ route('admin.dashboard') }}" class="admin-topnav-brand"><svg width="26" height="26" viewBox="0 0 30 30" style="flex-shrink:0;"><path d="M15 2 L26 22 L20 22 L20 27 L10 27 L10 22 L4 22 Z" fill="#D4A24E"/><path d="M15 6 L15 22" stroke="#2C1B33" stroke-width="1.5"/><path d="M9 22 Q15 17 21 22" stroke="#2C1B33" stroke-width="1.5" fill="none"/></svg> Pustaka<span>Nusantara</span>
             <span style="font-size:0.7rem;background:var(--gold);color:var(--brown);padding:0.15rem 0.5rem;border-radius:4px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;margin-left:0.25rem;">ADMIN</span>
         </a>
     </div>

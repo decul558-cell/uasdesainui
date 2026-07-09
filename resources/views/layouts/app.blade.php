@@ -139,7 +139,7 @@
         @media(max-width:768px){
             .hamburger{display:block;}
             .navbar-pill.mobile-open{display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;width:75%;max-width:280px;background:linear-gradient(180deg,var(--plum-dark) 0%,var(--plum) 100%);padding:0;gap:0;border-radius:0 16px 16px 0;box-shadow:4px 0 24px rgba(0,0,0,0.4);z-index:1001;animation:slideInLeft 0.25s ease;}
-            .navbar-pill.mobile-open a{text-align:left;padding:0.75rem 1.5rem;border-left:3px solid transparent;border-radius:0;display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;} .navbar-pill.mobile-open a.active{border-left-color:var(--gold);color:var(--gold);background:rgba(212,162,78,0.12);} .navbar-pill.mobile-open a:hover{border-left-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);border-radius:0;}
+            .navbar-pill.mobile-open .menu-header{display:flex !important;} .navbar-pill.mobile-open a{text-align:left;padding:0.75rem 1.5rem;border-left:3px solid transparent;border-radius:0;display:flex;align-items:center;gap:0.75rem;font-size:0.875rem;} .navbar-pill.mobile-open a.active{border-left-color:var(--gold);color:var(--gold);background:rgba(212,162,78,0.12);} .navbar-pill.mobile-open a:hover{border-left-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06);border-radius:0;}
             .footer-grid{grid-template-columns:1fr;gap:1.5rem;} footer{margin-top:3rem;padding:2rem 1.5rem 1.5rem;}
             #chat-panel{width:calc(100vw - 4rem);}
             .bottom-nav{display:block;}
@@ -157,6 +157,7 @@
 </head>
 <body>
 
+@unless(request()->routeIs("login", "register"))
 <nav class="navbar">
     <a href="{{ route('home') }}" class="navbar-brand">
         <svg width="26" height="26" viewBox="0 0 30 30" style="flex-shrink:0;">
@@ -167,7 +168,7 @@
         Pustaka <span>Nusantara</span>
     </a>
 
-    <ul class="navbar-pill" id="navMenu" style="list-style:none;"><li class="menu-header" style="display:none;padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;"><span style="display:flex;align-items:center;gap:0.5rem;font-family:Playfair Display,serif;font-weight:900;color:white;font-size:1rem;"><svg width="22" height="22" viewBox="0 0 30 30"><path d="M15 2 L26 22 L20 22 L20 27 L10 27 L10 22 L4 22 Z" fill="#D4A24E"/><path d="M15 6 L15 22" stroke="#2C1B33" stroke-width="1.5"/><path d="M9 22 Q15 17 21 22" stroke="#2C1B33" stroke-width="1.5" fill="none"/></svg>Pustaka <span style="color:var(--gold)">Nusantara</span></span><button onclick="closeMenu()" style="background:none;border:none;color:rgba(255,255,255,0.6);font-size:1.3rem;cursor:pointer;padding:0;"><i class="fas fa-times"></i></button></li>
+    <ul class="navbar-pill" id="navMenu" style="list-style:none;"><li class="menu-header" style="display:none;padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.08);align-items:center;justify-content:space-between;"><span style="display:flex;align-items:center;gap:0.5rem;font-family:Playfair Display,serif;font-weight:900;color:white;font-size:1rem;"><svg width="22" height="22" viewBox="0 0 30 30"><path d="M15 2 L26 22 L20 22 L20 27 L10 27 L10 22 L4 22 Z" fill="#D4A24E"/><path d="M15 6 L15 22" stroke="#2C1B33" stroke-width="1.5"/><path d="M9 22 Q15 17 21 22" stroke="#2C1B33" stroke-width="1.5" fill="none"/></svg>Pustaka <span style="color:var(--gold)">Nusantara</span></span><button onclick="closeMenu()" style="background:none;border:none;color:rgba(255,255,255,0.6);font-size:1.3rem;cursor:pointer;padding:0;"><i class="fas fa-times"></i></button></li>
         <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
         <li><a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}">Katalog</a></li>
         <li><a href="{{ route('articles.index') }}" class="{{ request()->routeIs('articles.*') ? 'active' : '' }}">Artikel</a></li>
@@ -234,6 +235,7 @@
         <i class="fas fa-bars"></i>
     </button>
 </nav>
+@endunless
 
 <div class="container" style="padding-top:1rem">
     @if(session('success'))<div class="alert alert-success"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>@endif
