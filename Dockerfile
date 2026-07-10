@@ -11,4 +11,4 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts --no-interaction
 
 EXPOSE 8080
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+CMD php -S 0.0.0.0:${PORT:-8080} -t public
